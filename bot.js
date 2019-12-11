@@ -2,9 +2,9 @@ const tmi = require('tmi.js');
 const dotenv = require('dotenv');
 dotenv.config();
 
-console.log(process.env.BOT_USERNAME);
-console.log(process.env.OAUTH_TOKEN);
-console.log(process.env.CHANNEL_NAME);
+// console.log(process.env.BOT_USERNAME);
+// console.log(process.env.OAUTH_TOKEN);
+// console.log(process.env.CHANNEL_NAME);
 
 // Define configuration options
 const opts = {
@@ -42,7 +42,7 @@ function onMessageHandler (target, context, msg, self) {
   // If the command is known, let's execute it
   if (commandName === '!d20') {
     const num = rollDice(commandName);
-    client.say(target, `You rolled a ${num}. Link: https://glitch.com/~twitch-chatbot`);
+    client.say(target, `You rolled a ${num}.`);
     console.log(`* Executed ${commandName} command`);
   } else if (commandName === '!hello') {
     client.say(target, `@${context.username}, heya!`);
