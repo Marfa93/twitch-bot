@@ -4,7 +4,7 @@
   "description": "A simple app chatbot example. Using the command !echo will simply repeat the message.",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
