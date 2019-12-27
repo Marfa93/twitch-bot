@@ -1,12 +1,12 @@
 const express = require("express");
 const client = require('./public/assets/js/bot.js')
-const port = 8080
+const port = process.env.app_port || 8080
 
 app = express();
 
 app.use('/', express.static(__dirname + '/public'));
 
-app.get('/', function(req, res, next){
+app.get('/', function(req, res, next) {
   res.sendFile('./public/index.html');
 });
 
