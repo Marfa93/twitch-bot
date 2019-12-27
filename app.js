@@ -1,47 +1,17 @@
-const tmi = require('tmi.js');
-const options = require("./config.js");
-const commands = require("./commands.js");
-const CMD_PREFIX = "!";
+const express = require("express");
+const client = require('./public/assets/js/bot.js')
+const port = 8080
 
-// Create a client with our options
-const client = new tmi.client(options);
+app = express();
 
-// Connect to Twitch:
-client.connect();
+app.use('/', express.static(__dirname + '/public'));
 
-// Register our event handlers (defined below)
-// client.on('message', onMessageHandler);
-client.on('connected', onConnectedHandler);
-
-// Called every time the bot connects to Twitch chat
-function onConnectedHandler (addr, port) {
-  console.log(`* Connected to ${addr}:${port}`);
-}
-
-client.on("chat", function (channel, userstate, message, self) {
-  if (self) return;
-  const msg = message.trim();
-  console.log(userstate, msg);
-  handleCommmand(channel, userstate, msg);
+app.get('/', function(req, res, next){
+  res.sendFile('./public/index.html');
 });
 
-function handleCommmand(channel, userstate, message) {
-  if (message.charAt(0) == CMD_PREFIX) {
-    processCommand(channel, userstate, message)
-  }
-}
+app.use(function (req, res, next) {
+  res.status(404).send("Sorry can't find that!")
+})
 
-function processCommand(channel, userstate, message) {
-  console.log("processing commands...");
-  message = message.replace(CMD_PREFIX, '').toLowerCase();
-  command = message.split(' ');
-  for (let i = 0; i < commands.length; i++) {
-    if (command[0] == commands[i].name) {
-      if (commands[i].type == "function") {
-        commands[i].func(channel, userstate, message, client, command[1]);
-      } else if (commands[i].type == "message") {
-        client.say(channel, commands[i].message);
-      }
-    }
-  }
-}
+app.listen(port, () => console.log(`App listening to ${port}`));
