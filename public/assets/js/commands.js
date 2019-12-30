@@ -23,6 +23,11 @@ const commands = [
         name: "tchip",
         type: "message",
         message: "/me tchipe tout le monde, sans exception."
+    },
+    {
+        name: "fdp",
+        type: "message",
+        message: "Faites des phrases complètes bordel !!!"
     }
 ];
 module.exports = commands

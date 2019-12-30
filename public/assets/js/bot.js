@@ -46,4 +46,17 @@ function processCommand(channel, userstate, message) {
   }
 }
 
-module.exports = client
+exports.chat = (req, res) => {
+  client.on("chat", function (channel, userstate, message, self) {
+    try {
+      return {
+          id: userstate.id || Date.now(),
+          sent: userstate.tmi-sent-ts || Date.now(),
+          sender: userstate.display-name,
+          message: message
+      }
+    } catch(err) {
+      return {errors: err}
+    }
+  })
+}
