@@ -14,21 +14,18 @@ app.get('/', function(req, res, next) {
   res.sendFile('./public/index.html');
 });
 
-app.get('/chat', function(req, res, next) {
-  chat.emit('chat', client.chat(req, res));
-})
-
 app.use(function (req, res, next) {
   res.status(404).send("Il n'y a rien par ici !")
 })
 
-io.sockets.on('connection', function (socket) {
+io.on('connection', async function (socket) {
   console.log('Un client est connecté !');
-});
 
-const chat = io.of('/chat')
-  .on('connection', function (socket) {
-    console.log(`Quelqu'un s'est connecté`)
-  });
+  client.chatClient.on("chat", function (channel, userstate, message, self) {
+    let messageLine = client.getChatLine(userstate, message)
+    socket.broadcast.emit('chat-message', messageLine)
+  })
+
+});
 
 server.listen(port, () => console.log(`App listening to ${port}`));

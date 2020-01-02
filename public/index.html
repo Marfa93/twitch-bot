@@ -12,15 +12,19 @@
 <body>
     <div class="container" id="app">
         <h1>Bonjour tout le monde ! Voici un aperçu du chat :</h1>
-        <div class="chatbox">
+        <div class="chatbox" v-if="hasMessages">
             <message-line
                 v-for="message in messages"
                 v-bind:message="message"
                 v-bind:key="message.id"
                 ></message-line>
         </div>
+        <div v-else>
+            <h2>Pas de message pour le moment :(</h2>
+        </div>
     </div>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script src="assets/js/vue.js"></script>
 </body>
 </html>

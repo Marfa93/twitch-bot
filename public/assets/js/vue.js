@@ -1,3 +1,6 @@
+const socket = io()
+const chatLimit = 10
+
 Vue.component('message-line', {
     props: ['message'],
     template: '<div>[{{ message.sent }}] <{{ message.sender }}>: {{ message.message }}</div>'
@@ -6,6 +9,22 @@ Vue.component('message-line', {
 const app = new Vue({
     el: '#app',
     data: {
-        messages: [{id: '1', sent: '17:30', sender: 'Marfa_LeVrai', message: 'Salut tout le monde !'}]
+        messages: []
+    },
+    created: function() {
+        socket.on('chat-message', (data) => {
+            if (this.messages.length > chatLimit) {
+                this.messages = this.messages.slice(-(chatLimit - 1))
+            }
+
+            data.sent = new Date(parseInt(data.sent)).toLocaleTimeString()
+
+            this.messages.push(data);
+        });
+    },
+    computed: {
+        hasMessages: function() {
+            return this.messages.length > 0
+        }
     }
 })

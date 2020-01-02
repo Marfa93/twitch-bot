@@ -21,7 +21,7 @@ function onConnectedHandler (addr, port) {
 client.on("chat", function (channel, userstate, message, self) {
   if (self) return;
   const msg = message.trim();
-  console.log(userstate, msg);
+  // console.log(userstate, msg);
   handleCommmand(channel, userstate, msg);
 });
 
@@ -46,17 +46,18 @@ function processCommand(channel, userstate, message) {
   }
 }
 
-exports.chat = (req, res) => {
-  client.on("chat", function (channel, userstate, message, self) {
-    try {
-      return {
-          id: userstate.id || Date.now(),
-          sent: userstate.tmi-sent-ts || Date.now(),
-          sender: userstate.display-name,
-          message: message
-      }
-    } catch(err) {
-      return {errors: err}
+function getChatLine(userstate, message) {
+  try {
+    return {
+      id: userstate.id || Date.now(),
+      sent: userstate['tmi-sent-ts'] || Date.now(),
+      sender: userstate['display-name'],
+      message: message
     }
-  })
+  } catch(err) {
+    return { errors: err }
+  }
 }
+
+exports.getChatLine = getChatLine
+exports.chatClient = client
