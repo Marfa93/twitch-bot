@@ -23,7 +23,7 @@ io.on('connection', async function (socket) {
 
   client.chatClient.on("chat", function (channel, userstate, message, self) {
     let messageLine = client.getChatLine(userstate, message)
-    socket.broadcast.emit('chat-message', messageLine)
+    socket.emit('chat-message', messageLine)
   })
 
 });
