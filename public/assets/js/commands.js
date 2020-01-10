@@ -1,3 +1,4 @@
+// export const sounds = ["celebration", "dejavu", "dundun", "epicsax", "wow"]
 const commands = [
     {
         name: "hello",

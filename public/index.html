@@ -22,6 +22,10 @@
         <div v-else>
             <h2>Pas de message pour le moment :(</h2>
         </div>
+        <h1>Et maintenant les sons que vous balancez !</h1>
+        <audio :src="soundUri" autoplay controls ref="player">
+            Votre navigateur ne supporte pas l'élément <code>audio</code>.
+        </audio>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
