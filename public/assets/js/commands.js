@@ -1,19 +1,19 @@
-const sqlite = require('sqlite3').verbose()
+// const sqlite = require('sqlite3').verbose()
 var fs = require('fs')
 
-function initDB() {
-    const db = new sqlite.Database('./db/quotes.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE, (err) => {
-        if (err) {
-            console.log(err)
-        } else {
-            let sql = fs.readFileSync('./db/quotes.sql', 'utf8')
-            db.run(sql)
-            console.log('Connected to the database')
-        }
-    })
+// function initDB() {
+//     const db = new sqlite.Database('./db/quotes.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE, (err) => {
+//         if (err) {
+//             console.log(err)
+//         } else {
+//             let sql = fs.readFileSync('./db/quotes.sql', 'utf8')
+//             db.run(sql)
+//             console.log('Connected to the database')
+//         }
+//     })
 
-    return db
-}
+//     return db
+// }
 
 function removeCommandsMessage(message) {
     const tokens = message.split(' ')
@@ -48,7 +48,7 @@ const commands = [
         type: "message",
         message: "Faites des phrases complètes bordel !!!"
     },
-    {
+    /*{
         name: "quote",
         type: "function",
         func: function (channel, userstate, message, client, subCommand = '') {
@@ -113,6 +113,6 @@ const commands = [
                     db.close()
             }
         }
-    }
+    }*/
 ];
 module.exports = commands
