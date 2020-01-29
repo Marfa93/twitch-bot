@@ -33,10 +33,11 @@ function handleCommmand(channel, userstate, message) {
 
 function processCommand(channel, userstate, message) {
   console.log("processing commands...");
-  message = message.replace(CMD_PREFIX, '').toLowerCase();
+  message = message.replace(CMD_PREFIX, '');
   command = message.split(' ');
+  subCommand = command[1] ? command[1].toLowerCase() : ''
   for (let i = 0; i < commands.length; i++) {
-    if (command[0] == commands[i].name) {
+    if (command[0].toLowerCase() === commands[i].name) {
       if (commands[i].type == "function") {
         commands[i].func(channel, userstate, message, client, command[1]);
       } else if (commands[i].type == "message") {
