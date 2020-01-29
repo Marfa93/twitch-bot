@@ -10,7 +10,6 @@ const client = new tmi.client(options);
 client.connect();
 
 // Register our event handlers (defined below)
-// client.on('message', onMessageHandler);
 client.on('connected', onConnectedHandler);
 
 // Called every time the bot connects to Twitch chat
