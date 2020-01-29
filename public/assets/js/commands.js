@@ -38,11 +38,6 @@ const commands = [
             client.say(channel, `${userstate.username} rolled a ${randNum}!`);
         }
     },
-    // {
-    //     name: "social",
-    //     type: "message",
-    //     message: "Je ne suis nul part pour le moment."
-    // },
     {
         name: "tchip",
         type: "message",
