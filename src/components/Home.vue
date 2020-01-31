@@ -1,3 +1,27 @@
+<template>
+    <div id="home">
+        <h1>Bonjour tout le monde ! Voici un aperçu du chat :</h1>
+        <div class="chatbox" v-if="hasMessages">
+            <message-line
+                v-for="message in messages"
+                v-bind:message="message"
+                v-bind:key="message.id"
+                ></message-line>
+        </div>
+        <div v-else>
+            <h2>Pas de message pour le moment :(</h2>
+        </div>
+        <h1>Et maintenant les sons que vous balancez !</h1>
+        <audio :src="soundUri" autoplay controls ref="player">
+            Votre navigateur ne supporte pas l'élément <code>audio</code>.
+        </audio>
+    </div>
+</template>
+
+<script>
+import MessageLine from './MessageLine';
+import io from 'socket.io-client';
+
 const socket = io()
 const chatLimit = 10
 const CMD_PREFIX = "!";
@@ -21,18 +45,19 @@ function doesFileExist(uri) {
     return isExist
 }
 
-Vue.component('message-line', {
-    props: ['message'],
-    template: '<div>[{{ message.sent }}] <{{ message.sender }}>: {{ message.message }}</div>'
-})
+const data = {
+    messages: [],
+    soundUri: '',
+    playlist: []
+}
 
-const app = new Vue({
-    el: '#app',
-    data: {
-        messages: [],
-        currentSound: '',
-        soundUri: '',
-        playlist: []
+export default {
+    name: 'Home',
+    data: function(){
+        return data
+    },
+    components: {
+        MessageLine
     },
     created: function() {
         socket.on('chat-message', (data) => {
@@ -50,8 +75,10 @@ const app = new Vue({
         const player = this.$refs.player
         // When the current sound has ended
         player.onended = (event) => {
+            this.soundUri = ''
             if (this.playlist.length) {
                 this.soundUri = this.playlist.shift()
+                player.load()
             }
         }
 
@@ -65,9 +92,15 @@ const app = new Vue({
             return this.messages.length > 0
         }
     },
-    watch: {
-        currentSound: function(sound) {
-            const uri = `assets/music/${sound}.mp3`
+    methods: {
+        getSound: function(message) {
+            if (message.charAt(0) == CMD_PREFIX) {
+                const sound = message.replace(CMD_PREFIX, '').toLowerCase();
+                this.getSoundUri(sound)
+            }
+        },
+        getSoundUri: function(sound) {
+            const uri = `${sound}.mp3`
 
             if (!doesFileExist(uri)) {
                 return
@@ -75,18 +108,10 @@ const app = new Vue({
 
             if ((this.$refs.player.ended && this.playlist.length === 0) || !this.soundUri) {
                 this.soundUri = uri
-                // this.$refs.player.play()
             } else {
                 this.playlist.push(uri)
             }
         }
-    },
-    methods: {
-        getSound: function(message) {
-            if (message.charAt(0) == CMD_PREFIX) {
-                const sound = message.replace(CMD_PREFIX, '').toLowerCase();
-                this.currentSound = sound
-            }
-        }
     }
-})
+}
+</script>

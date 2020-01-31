@@ -7,28 +7,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
     <title>Le Marfa Bot</title>
 </head>
 <body>
     <div class="container" id="app">
-        <h1>Bonjour tout le monde ! Voici un aperçu du chat :</h1>
-        <div class="chatbox" v-if="hasMessages">
-            <message-line
-                v-for="message in messages"
-                v-bind:message="message"
-                v-bind:key="message.id"
-                ></message-line>
-        </div>
-        <div v-else>
-            <h2>Pas de message pour le moment :(</h2>
-        </div>
-        <h1>Et maintenant les sons que vous balancez !</h1>
-        <audio :src="soundUri" autoplay controls ref="player">
-            Votre navigateur ne supporte pas l'élément <code>audio</code>.
-        </audio>
+        <router-view></router-view>
     </div>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="assets/js/vue.js"></script>
 </body>
 </html>
