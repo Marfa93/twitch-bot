@@ -48,6 +48,11 @@ const commands = [
         type: "message",
         message: "Faites des phrases complètes bordel !!!"
     },
+    {
+        name: "sons",
+        type: "message",
+        message: "Vous retrouverez les sons à cette adresse : http://marfabot.cloudno.de/sounds"
+    }
     /*{
         name: "quote",
         type: "function",
