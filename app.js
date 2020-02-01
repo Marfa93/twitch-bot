@@ -28,7 +28,7 @@ app.get('/sounds', function(req, res, next) {
 });
 
 app.get('/soundslist', function(req, res, next) {
-  const directoryPath = path.join(__dirname, 'dist/assets/music');
+  const directoryPath = path.join(__dirname, 'music');
   const fileList = []
   //passsing directoryPath and callback function
   fs.readdir(directoryPath, function (err, files) {
