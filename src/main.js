@@ -2,7 +2,7 @@ import axios from 'axios'
 import Home from './components/Home.vue'
 import Sounds from './components/Sounds.vue'
 
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = window.location.origin;
 
 const routes = [
     { path: '/home', component: Home },
