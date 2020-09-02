@@ -16,8 +16,8 @@
     "socket.io-client": "^2.3.0",
     "sqlite3": "4.0.8",
     "tmi.js": "^1.2.1",
-    "vue": "^2.6.11",
-    "vue-router": "^3.1.5"
+    "vue": "^2.6.12",
+    "vue-router": "^3.4.3"
   },
   "engines": {
     "node": "8.x"
@@ -32,8 +32,8 @@
     "irc"
   ],
   "devDependencies": {
-    "@vue/cli-service": "^4.1.2",
-    "vue-template-compiler": "^2.6.11"
+    "@vue/cli-service": "^4.5.4",
+    "vue-template-compiler": "^2.6.12"
   },
   "postcss": {}
 }
