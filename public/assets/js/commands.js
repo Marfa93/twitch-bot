@@ -9,6 +9,16 @@ function removeCommandsMessage(message) {
     return tokens.join(' ').trim();
 }
 
+function speech(message) {
+    const speech = new gtts(message, 'fr');
+    speech.save('./dist/assets/sounds/tts.mp3', function (err, result) {
+        if(err) {
+            throw new Error(err);
+        }
+        console.log('Success! Open file assets/sounds/tts.mp3 to hear result.');
+    });
+}
+
 const commands = [
     {
         name: "hello",
@@ -45,15 +55,10 @@ const commands = [
         type: "function",
         func: function (channel, userstate, message, client, text) {
             if (message.length > CHAR_LIMIT + 4) {
+                speech("");
                 client.say(channel, `@${userstate.username} : le message contient plus de ${CHAR_LIMIT} caractères.`);
             } else {
-                const speech = new gtts(message.substring(4), 'fr')
-                speech.save('./dist/assets/sounds/tts.mp3', function (err, result) {
-                    if(err) {
-                        throw new Error(err);
-                    }
-                    console.log('Success! Open file assets/sounds/tts.mp3 to hear result.');
-                });
+                speech(message.substring(4));
             }
         }
     }
