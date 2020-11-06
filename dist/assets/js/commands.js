@@ -1,19 +1,5 @@
-// const sqlite = require('sqlite3').verbose()
-var fs = require('fs')
-
-// function initDB() {
-//     const db = new sqlite.Database('./db/quotes.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE, (err) => {
-//         if (err) {
-//             console.log(err)
-//         } else {
-//             let sql = fs.readFileSync('./db/quotes.sql', 'utf8')
-//             db.run(sql)
-//             console.log('Connected to the database')
-//         }
-//     })
-
-//     return db
-// }
+const fs = require('fs')
+const gtts = require('gtts')
 
 function removeCommandsMessage(message) {
     const tokens = message.split(' ')
@@ -52,72 +38,23 @@ const commands = [
         name: "sons",
         type: "message",
         message: "Vous retrouverez les sons à cette adresse : http://marfabot.cloudno.de/sounds"
-    }
-    /*{
-        name: "quote",
+    },
+    {
+        name: "tts",
         type: "function",
-        func: function (channel, userstate, message, client, subCommand = '') {
-            const db = initDB()
-            switch (subCommand) {
-                case 'add':
-                    //Save the quote
-                    let quote = removeCommandsMessage(message)
-                    if (quote === '') {
-                        client.say(channel, `@${userstate.username}: Il n'y a pa de citation ! Escroc !`)
-                        db.close()
-                        return
+        func: function (channel, userstate, message, client, text) {
+            if (message.length > 204) {
+                client.say(channel, `@${userstate.username} : le message contient plus de 200 caractères.`);
+            } else {
+                const speech = new gtts(message.substring(4), 'fr')
+                speech.save('./dist/assets/sounds/tts.mp3', function (err, result) {
+                    if(err) {
+                        throw new Error(err);
                     }
-                    let insertSql = `INSERT INTO quotes (quote, author) VALUES (?, ?)`
-                    db.run(
-                        insertSql,
-                        [quote, userstate.username],
-                        function (err) {
-                            if (err) {
-                                console.log(err)
-                                client.say(channel, `@${userstate.username}: Une erreur est survenue lors de l'ajout de la citation`)
-                            } else {
-                                client.say(channel, `@${userstate.username}: La citation a été ajoutée ! :)`)
-                            }
-                        }
-                    )
-                    db.close()
-                    break
-                case 'remove':
-                    //Remove a quote
-                    let removeSql = `DELETE FROM quotes WHERE quotes_id = ?`
-                    let quoteId = removeCommandsMessage(message)
-                    db.run(
-                        removeSql,
-                        [quoteId],
-                        function(err) {
-                            if (err) {
-                                console.log(err)
-                                client.say(channel, `@${userstate.username}: Une erreur est survenue lors de la suppression :(`)
-                            } else {
-                                return this.changes === 0
-                                ? client.say(channel, `@${userstate.username}: La citation #${quoteId} n'existe pas.`)
-                                : client.say(channel, `@${userstate.username}: La citation #${quoteId} a été supprimé !`)
-                            }
-                        }
-                    )
-                    // client.say(channel, `@${userstate.username}: La commande "remove" sera disponible sous peu ;)`)
-                    db.close()
-                    break
-                default:
-                    let randomQuoteSql = `SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1`
-                    db.get(randomQuoteSql, [], (err, row) => {
-                        if (err) {
-                          console.log(err)
-                          client.say(channel, `@${userstate.username}: Une erreur est survenue :(`)
-                        } else {
-                            return row
-                            ? client.say(channel, `@${userstate.username}: #${row.quotes_id} ${row.quote}`)
-                            : client.say(channel, `@${userstate.username}: Pas de citation dipsoninible :(`)
-                        }
-                    })
-                    db.close()
+                    console.log('Success! Open file assets/sounds/tts.mp3 to hear result.');
+                });
             }
         }
-    }*/
+    }
 ];
 module.exports = commands

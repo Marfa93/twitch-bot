@@ -25,6 +25,7 @@ import io from 'socket.io-client';
 const socket = io()
 const chatLimit = 10
 const CMD_PREFIX = "!";
+const ttsUri = "assets/sounds/tts.mp3";
 
 function doesFileExist(uri) {
     const xhr = new XMLHttpRequest()
@@ -43,6 +44,14 @@ function doesFileExist(uri) {
 
     xhr.send(null)
     return isExist
+}
+
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
 }
 
 const data = {
@@ -100,7 +109,10 @@ export default {
             }
         },
         getSoundUri: function(sound) {
-            const uri = `${sound}.mp3`
+            const time = Date.now();
+            const uri = sound.startsWith('tts') ? `${ttsUri}?t=${time}` : `${sound}.mp3`;
+
+            sleep(500); // I need this tempo to make sur the TTS has done processing
 
             if (!doesFileExist(uri)) {
                 return
