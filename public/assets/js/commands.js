@@ -1,6 +1,7 @@
 const fs = require('fs');
 const gtts = require('gtts');
 const CHAR_LIMIT = 100;
+const TTS_FILE_URI = "./dist/assets/sounds/tts.mp3";
 
 function removeCommandsMessage(message) {
     const tokens = message.split(' ')
@@ -11,7 +12,7 @@ function removeCommandsMessage(message) {
 
 function speech(message) {
     const speech = new gtts(message, 'fr');
-    speech.save('./dist/assets/sounds/tts.mp3', function (err, result) {
+    speech.save(TTS_FILE_URI, function (err, result) {
         if(err) {
             throw new Error(err);
         }
@@ -55,7 +56,7 @@ const commands = [
         type: "function",
         func: function (channel, userstate, message, client, text) {
             if (message.length > CHAR_LIMIT + 4) {
-                speech("");
+                fs.unlink(TTS_FILE_URI);
                 client.say(channel, `@${userstate.username} : le message contient plus de ${CHAR_LIMIT} caractères.`);
             } else {
                 speech(message.substring(4));
