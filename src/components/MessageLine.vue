@@ -1,5 +1,5 @@
 <template>
-    <div>[{{ message.sent }}] <{{ message.sender }}>: {{ message.message }}</div>
+    <div>[{{ message.sent }}] &lt;{{ message.sender }}>: {{ message.message }}</div>
 </template>
 
 <script>

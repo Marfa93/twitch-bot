@@ -1,11 +1,10 @@
-const fs = require('fs')
-const gtts = require('gtts')
+const fs = require('fs');
 
 function removeCommandsMessage(message) {
     const tokens = message.split(' ')
-    tokens.splice(0, 2)
+    tokens.splice(0, 2);
 
-    return tokens.join(' ').trim()
+    return tokens.join(' ').trim();
 }
 
 const commands = [
@@ -38,23 +37,6 @@ const commands = [
         name: "sons",
         type: "message",
         message: "Vous retrouverez les sons à cette adresse : http://marfabot.cloudno.de/sounds"
-    },
-    {
-        name: "tts",
-        type: "function",
-        func: function (channel, userstate, message, client, text) {
-            if (message.length > 204) {
-                client.say(channel, `@${userstate.username} : le message contient plus de 200 caractères.`);
-            } else {
-                const speech = new gtts(message.substring(4), 'fr')
-                speech.save('./dist/assets/sounds/tts.mp3', function (err, result) {
-                    if(err) {
-                        throw new Error(err);
-                    }
-                    console.log('Success! Open file assets/sounds/tts.mp3 to hear result.');
-                });
-            }
-        }
     }
 ];
 module.exports = commands
